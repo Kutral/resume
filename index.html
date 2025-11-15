@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kutraleeswaran B</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons CDN -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fde047; /* Bright Yellow - Default */
+            color: #000;
+            overflow-x: hidden; /* Prevents horizontal scroll */
+            transition: background-color 0.6s ease, color 0.6s ease;
+            cursor: none; /* Hide default cursor */
+        }
+        
+        /* Custom Cursor */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            background-color: #ec4899; /* Hot Pink */
+            border: 2px solid #000;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease;
+            z-index: 9999;
+        }
+
+        #custom-cursor-trailer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #3b82f6; /* Blue */
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease-out;
+            z-index: 9998;
+        }
+        
+        /* Cursor hover state */
+        body:has(a:hover, .neo-button:hover) #custom-cursor {
+            width: 30px;
+            height: 30px;
+            background-color: #a3e635; /* Lime */
+        }
+        body:has(a:hover, .neo-button:hover) #custom-cursor-trailer {
+            width: 60px;
+            height: 60px;
+            opacity: 0.5;
+        }
+
+        /* Helper class for the hard shadow */
+        .neo-shadow {
+            box-shadow: 8px 8px 0px #000;
+        }
+        .neo-shadow-sm {
+            box-shadow: 4px 4px 0px #000;
+        }
+        
+        /* Invert colors for dark backgrounds */
+        .dark-mode-section {
+            color: #fff;
+        }
+        .dark-mode-section .neo-shadow,
+        .dark-mode-section .neo-shadow-sm {
+            box-shadow: 8px 8px 0px #fff; /* White shadow */
+        }
+        .dark-mode-section .neo-shadow-sm {
+            box-shadow: 4px 4px 0px #fff;
+        }
+        .dark-mode-section .header-border {
+            border-color: #fff;
+        }
+        .dark-mode-section .text-gray-800,
+        .dark-mode-section .text-gray-700,
+        .dark-mode-section .text-gray-600 {
+            color: #d1d5db; /* Lighter gray for text */
+        }
+        .dark-mode-section .bg-white {
+            background-color: #1f2937; /* Dark gray */
+            border-color: #fff;
+        }
+        .dark-mode-section .bg-gray-200 {
+            background-color: #374151;
+            color: #fff;
+            border-color: #fff;
+        }
+        .dark-mode-section .text-black {
+            color: #fff;
+        }
+        .dark-mode-section .border-black {
+            border-color: #fff;
+        }
+        .dark-mode-section .hover\:text-pink-500:hover {
+            color: #fde047; /* Yellow hover on dark */
+        }
+        .dark-mode-section .text-pink-500 {
+            color: #fde047; /* Yellow */
+        }
+        .dark-mode-section .text-blue-600 {
+            color: #60a5fa; /* Light blue */
+        }
+         .dark-mode-section .hover\:text-blue-600:hover {
+            color: #fde047; /* Yellow */
+        }
+
+        /* Card and Button hover effect */
+        .neo-hover {
+            transition: all 0.2s ease-in-out;
+        }
+        .neo-hover:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0px #ec4899; /* Hot Pink shadow on hover */
+        }
+        .dark-mode-section .neo-hover:hover {
+            box-shadow: 12px 12px 0px #fde047; /* Yellow shadow on dark */
+        }
+        
+        .neo-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #3b82f6; /* Blue shadow on hover */
+        }
+        .dark-mode-section .neo-button:hover {
+            box-shadow: 6px 6px 0px #fde047; /* Yellow shadow on dark */
+        }
+
+        /* EXTREME Scroll Animation Setup */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(100px) rotate(-10deg);
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); /* Aggressive ease-out */
+        }
+        
+        .scroll-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0) rotate(0);
+        }
+
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .marquee-inner {
+            display: flex;
+            animation: marquee 40s linear infinite;
+        }
+
+        /* Custom header border */
+        .header-border {
+            border-bottom: 4px solid #000;
+        }
+
+        /* Diagonal Section Wrapper */
+        .diagonal-section {
+            transform: rotate(-2deg);
+            margin-top: 4rem;
+            margin-bottom: 4rem;
+            padding: 4rem 0;
+        }
+        .diagonal-section-inner {
+            transform: rotate(2deg);
+        }
+
+    </style>
+</head>
+<body class="bg-yellow-300">
+
+    <!-- Custom Cursor Elements -->
+    <div id="custom-cursor"></div>
+    <div id="custom-cursor-trailer"></div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-inherit backdrop-blur-md header-border">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-black tracking-tighter">KUTRALEESWARAN B.</a>
+            <div class="flex items-center gap-4 md:gap-6 flex-wrap">
+                <a href="#about" class="font-bold hover:text-pink-500 transition-colors">About</a>
+                <a href="#projects" class="font-bold hover:text-pink-500 transition-colors">Projects</a>
+                <a href="#skills" class="font-bold hover:text-pink-500 transition-colors">Skills</a>
+                <a href="#contact" class="font-bold hover:text-pink-500 transition-colors">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-16 md:py-24">
+
+        <!-- Hero / About Section -->
+        <section id="about" class="mb-24 md:mb-32 scroll-animate" 
+                 data-bg-color="#fde047" data-text-color="#000000">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6">
+                HI, I'M KUTRALEESWARAN.
+            </h1>
+            <h2 class="text-3xl md:text-5xl font-bold text-blue-600 mb-8">
+                Computer Science & Engineering Graduate.
+            </h2>
+            <p class="text-lg md:text-xl max-w-3xl mb-10 leading-relaxed">
+                I'm a Computer Science & Engineering graduate with skills in web development, API integration, and software testing. I'm eager to contribute to innovative projects and grow as a full-stack developer in a collaborative environment.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="https://github.com/kutral" target="_blank" class="flex items-center gap-2 bg-white text-black font-bold py-3 px-5 border-4 border-black rounded-lg neo-shadow-sm neo-button">
+                    <i data-feather="github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://linkedin.com/in/kutraleeswaranb/" target="_blank" class="flex items-center gap-2 bg-white text-black font-bold py-3 px-5 border-4 border-black rounded-lg neo-shadow-sm neo-button">
+                    <i data-feather="linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://kutral.github.io/Portfolio/" target="_blank" class="flex items-center gap-2 bg-white text-black font-bold py-3 px-5 border-4 border-black rounded-lg neo-shadow-sm neo-button">
+                    <i data-feather="briefcase"></i>
+                    <span>Portfolio</span>
+                </a>
+                <a href="mailto:kutraleeswaran2003@gmail.com" class="flex items-center gap-2 bg-white text-black font-bold py-3 px-5 border-4 border-black rounded-lg neo-shadow-sm neo-button">
+                    <i data-feather="mail"></i>
+                    <span>Email</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Projects Section - Diagonal -->
+        <div class="diagonal-section bg-pink-500" 
+             data-bg-color="#ec4899" data-text-color="#000000">
+            <section id="projects" class="diagonal-section-inner">
+                <h2 class="text-4xl md:text-6xl font-black tracking-tighter mb-12 scroll-animate text-center">PROJECTS</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-6">
+                    <!-- Project 1 -->
+                    <div class="bg-white p-6 border-4 border-black rounded-xl neo-shadow neo-hover scroll-animate">
+                        <div class="w-12 h-12 rounded-lg bg-yellow-300 border-4 border-black flex items-center justify-center mb-4">
+                            <i data-feather="layout" class="text-black"></i>
+                        </div>
+                        <h3 class="text-2xl font-black mb-3">Portfolio Website</h3>
+                        <p class="text-base mb-4">Developed a modern portfolio with 3D visuals (React Three Fiber) and smooth animations (Framer Motion). Designed a responsive UI with TailwindCSS and integrated a working contact form.</p>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="bg-white p-6 border-4 border-black rounded-xl neo-shadow neo-hover scroll-animate" style="transition-delay: 0.2s;">
+                        <div class="w-12 h-12 rounded-lg bg-blue-500 border-4 border-black flex items-center justify-center mb-4">
+                            <i data-feather="tool" class="text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-black mb-3">Automated Testing Framework</h3>
+                        <p class="text-base mb-4">A testing tool for vehicle control systems using Python and Selenium. Wrote automated test scripts with Pytest to verify functionality and integrated APIs to test data inputs.</p>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="bg-white p-6 border-4 border-black rounded-xl neo-shadow neo-hover scroll-animate" style="transition-delay: 0.3s;">
+                        <div class="w-12 h-12 rounded-lg bg-green-500 border-4 border-black flex items-center justify-center mb-4">
+                            <i data-feather="check-square" class="text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-black mb-3">Online Voting System</h3>
+                        <p class="text-base mb-4">A web application for online voting with a user-friendly interface using React. Used Node.js and MySQL to handle user data and votes securely, with real-time result updates via API integration.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Skills Section (Marquee) -->
+        <section id="skills" class="my-24 md:my-32"
+                 data-bg-color="#3b82f6" data-text-color="#ffffff">
+            <h2 class="text-4xl md:text-6xl font-black tracking-tighter mb-12 scroll-animate text-white">SKILLS</h2>
+            
+            <!-- Marquee 1 -->
+            <div class="w-full overflow-hidden bg-white border-4 border-black neo-shadow-sm py-4 mb-6 scroll-animate">
+                <div class="marquee-inner whitespace-nowrap">
+                    <!-- Content is duplicated for seamless scroll -->
+                    <span class="text-2xl font-black text-black mx-4">FRONT-END</span>
+                    <span class="text-2xl font-black text-pink-500 mx-4">HTML</span>
+                    <span class="text-2xl font-black text-blue-500 mx-4">CSS</span>
+                    <span class="text-2xl font-black text-yellow-500 mx-4">JAVASCRIPT</span>
+                    <span class="text-2xl font-black text-cyan-500 mx-4">REACT</span>
+                    <span class="text-2xl font-black text-black mx-4">BACK-END</span>
+                    <span class="text-2xl font-black text-red-500 mx-4">JAVA</span>
+                    <span class="text-2xl font-black text-green-500 mx-4">PYTHON</span>
+                    <span class="text-2xl font-black text-purple-500 mx-4">APIs</span>
+                    
+                    <span class="text-2xl font-black text-black mx-4">FRONT-END</span>
+                    <span class="text-2xl font-black text-pink-500 mx-4">HTML</span>
+                    <span class="text-2xl font-black text-blue-500 mx-4">CSS</span>
+                    <span class="text-2xl font-black text-yellow-500 mx-4">JAVASCRIPT</span>
+                    <span class="text-2xl font-black text-cyan-500 mx-4">REACT</span>
+                    <span class="text-2xl font-black text-black mx-4">BACK-END</span>
+                    <span class="text-2xl font-black text-red-500 mx-4">JAVA</span>
+                    <span class="text-2xl font-black text-green-500 mx-4">PYTHON</span>
+                    <span class="text-2xl font-black text-purple-500 mx-4">APIs</span>
+                </div>
+            </div>
+            
+            <!-- Marquee 2 -->
+            <div class="w-full overflow-hidden bg-black border-4 border-white neo-shadow-sm py-4 scroll-animate" style="transition-delay: 0.2s; box-shadow: 4px 4px 0px #fff;">
+                <div class="marquee-inner" style="animation-direction: reverse; animation-duration: 35s;">
+                    <!-- Content is duplicated -->
+                    <span class="text-2xl font-black text-white mx-4">DATABASE</span>
+                    <span class="text-2xl font-black text-blue-400 mx-4">MYSQL</span>
+                    <span class="text-2xl font-black text-green-400 mx-4">MONGODB</span>
+                    <span class="text-2xl font-black text-white mx-4">SOFTWARE TESTING</span>
+                    <span class="text-2xl font-black text-purple-400 mx-4">PYTEST</span>
+                    <span class="text-2xl font-black text-red-400 mx-4">SELENIUM</span>
+                    <span class="text-2xl font-black text-yellow-400 mx-4">UNIT TESTING</span>
+
+                    <span class="text-2xl font-black text-white mx-4">DATABASE</span>
+                    <span class="text-2xl font-black text-blue-400 mx-4">MYSQL</span>
+                    <span class="text-2xl font-black text-green-400 mx-4">MONGODB</span>
+                    <span class="text-2xl font-black text-white mx-4">SOFTWARE TESTING</span>
+                    <span class="text-2xl font-black text-purple-400 mx-4">PYTEST</span>
+                    <span class="text-2xl font-black text-red-400 mx-4">SELENIUM</span>
+                    <span class="text-2xl font-black text-yellow-400 mx-4">UNIT TESTING</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience & Education - Diagonal -->
+        <div class="diagonal-section bg-lime-400"
+             data-bg-color="#a3e635" data-text-color="#000000">
+            <section id="experience" class="diagonal-section-inner">
+                <h2 class="text-4xl md:text-6xl font-black tracking-tighter mb-12 scroll-animate text-center">JOURNEY</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 px-6">
+                    <!-- Experience -->
+                    <div class="bg-white p-6 border-4 border-black rounded-xl neo-shadow neo-hover scroll-animate">
+                        <h3 class="text-3xl font-black mb-4">Experience</h3>
+                        <div class="mb-6">
+                            <h4 class="text-xl font-black">Zoho School for Graduate Studies</h4>
+                            <p class="text-lg font-bold text-gray-700">Incubation Intern</p>
+                            <p class="text-md text-gray-600 mb-2">September 2025 - Present | Vellore</p>
+                            <ul class="list-disc list-outside pl-5 space-y-1">
+                                <li>Focusing on Java programming, problem-solving, and system design.</li>
+                                <li>Intensive hands-on training in core Java and OOP principles.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Education -->
+                    <div class="bg-white p-6 border-4 border-black rounded-xl neo-shadow neo-hover scroll-animate" style="transition-delay: 0.2s;">
+                        <h3 class="text-3xl font-black mb-4">Education</h3>
+                        <div class="mb-6">
+                            <h4 class="text-xl font-black">Bachelor of Technology, CSE</h4>
+                            <p class="text-lg font-bold text-gray-700">Vel Tech Rangarajan Dr. Sagunthala R&D Institute</p>
+                            <p class="text-md text-gray-600 mb-2">2020 - 2024 | CGPA: 8.18</p>
+                        </div>
+                        
+                        <h3 class="text-2xl font-black mb-3">Certifications</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-gray-200 text-gray-800 text-sm font-bold border-2 border-black px-3 py-1 rounded-md">PCAP: Python</span>
+                            <span class="bg-gray-200 text-gray-800 text-sm font-bold border-2 border-black px-3 py-1 rounded-md">Deep Learning</span>
+                            <span class="bg-gray-200 text-gray-800 text-sm font-bold border-2 border-black px-3 py-1 rounded-md">CCNA</span>
+                            <span class="bg-gray-200 text-gray-800 text-sm font-bold border-2 border-black px-3 py-1 rounded-md">Generative AI</span>
+                            <span class="bg-gray-200 text-gray-800 text-sm font-bold border-2 border-black px-3 py-1 rounded-md">Cybersecurity</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Contact Footer -->
+        <footer id="contact" class="border-t-4 border-black pt-12 text-center"
+                data-bg-color="#000000" data-text-color="#ffffff">
+            <div class="py-24">
+                <h2 class="text-4xl md:text-5xl font-black tracking-tighter mb-6 scroll-animate">LET'S CONNECT</h2>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 scroll-animate" style="transition-delay: 0.1s;">
+                    I'm actively seeking new opportunities and creative challenges. Feel free to reach out!
+                </p>
+                <a href="mailto:kutraleeswaran2003@gmail.com" class="text-xl md:text-3xl font-black text-pink-500 hover:text-blue-600 transition-all inline-block mb-10 scroll-animate" style="transition-delay: 0.2s;">
+                    kutraleeswaran2003@gmail.com
+                </a>
+                <div class="flex justify-center gap-6 mb-12 scroll-animate" style="transition-delay: 0.3s;">
+                    <a href="https://github.com/kutral" target="_blank" class="text-white hover:text-pink-500 transition-colors">
+                        <i data-feather="github" class="w-8 h-8"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/kutraleeswaranb/" target="_blank" class="text-white hover:text-pink-500 transition-colors">
+                        <i data-feather="linkedin" class="w-8 h-8"></i>
+                    </a>
+                    <a href="httpsa://kutral.github.io/Portfolio/" target="_blank" class="text-white hover:text-pink-500 transition-colors">
+                        <i data-feather="briefcase" class="w-8 h-8"></i>
+                    </a>
+                </div>
+                <p class="text-sm text-gray-400 scroll-animate" style="transition-delay: 0.4s;">&copy; 2025 Kutraleeswaran B. Built with Extreme Neo-Brutalism.</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- Feather Icons ---
+        feather.replace();
+
+        // --- Custom Cursor Logic ---
+        const cursor = document.getElementById('custom-cursor');
+        const cursorTrailer = document.getElementById('custom-cursor-trailer');
+
+        window.addEventListener('mousemove', e => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+            
+            cursorTrailer.style.left = `${e.clientX}px`;
+            cursorTrailer.style.top = `${e.clientY}px`;
+        });
+
+        // --- Smooth Scroll for Nav Links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // --- Intersection Observer for Scroll Animations ---
+        const scrollElements = document.querySelectorAll('.scroll-animate');
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // We don't unobserve, so it can re-animate if scrolled out and back in
+                } else {
+                    // Optional: remove class if you want it to re-animate every time
+                    entry.target.classList.remove('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        });
+
+        scrollElements.forEach((el) => {
+            scrollObserver.observe(el);
+        });
+
+        // --- Intersection Observer for Background Color Change ---
+        const sections = document.querySelectorAll('[data-bg-color]');
+        const body = document.body;
+        const header = document.querySelector('header');
+
+        const bgObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                    const bgColor = entry.target.getAttribute('data-bg-color');
+                    const textColor = entry.target.getAttribute('data-text-color');
+                    
+                    body.style.backgroundColor = bgColor;
+                    body.style.color = textColor;
+
+                    // Handle dark mode sections
+                    if (textColor === '#ffffff') {
+                        body.classList.add('dark-mode-section');
+                        header.classList.add('dark-mode-section');
+                    } else {
+                        body.classList.remove('dark-mode-section');
+                        header.classList.remove('dark-mode-section');
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5 // Trigger when 50% of the section is in view
+        });
+
+        sections.forEach((el) => {
+            bgObserver.observe(el);
+        });
+
+    </script>
+</body>
+</html>
