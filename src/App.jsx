@@ -92,7 +92,8 @@ const useTheme = () => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
       if (saved) return saved === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      // Default to light mode (false) if no preference saved
+      return false;
     }
     return false;
   });
@@ -842,7 +843,7 @@ export default function App() {
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 sm:gap-6 grid-auto-flow-dense">
 
           {/* 1. PROFILE */}
-          <SpotlightCard id="about" isFocused={focusedCardIndex === 0} className={`md:col-span-4 min-h-[280px] sm:min-h-[300px] ${glassCardStyles}`} delay={0.1}>
+          <SpotlightCard id="about" isFocused={focusedCardIndex === 0} className={`md:col-span-4 min-h-[280px] sm:min-h-[300px] scroll-mt-28 ${glassCardStyles}`} delay={0.1}>
             <div className="flex justify-between items-start mb-4 sm:mb-6">
               <div className={`p-3 rounded-2xl ${ACCENTS.lavender} inline-block`}>
                 <User size={24} />
@@ -863,7 +864,7 @@ export default function App() {
           </SpotlightCard>
 
           {/* 2. EXPERIENCE */}
-          <SpotlightCard id="experience" isFocused={focusedCardIndex === 1} className={`md:col-span-2 min-h-[280px] sm:min-h-[300px] ${glassCardStyles}`} delay={0.15}>
+          <SpotlightCard id="experience" isFocused={focusedCardIndex === 1} className={`md:col-span-2 min-h-[280px] sm:min-h-[300px] scroll-mt-28 ${glassCardStyles}`} delay={0.15}>
             <div className={`p-3 rounded-2xl ${ACCENTS.blue} w-fit mb-4`}>
               <Briefcase size={22} />
             </div>
@@ -893,14 +894,15 @@ export default function App() {
           <SpotlightCard
             id="ai-labs"
             isFocused={focusedCardIndex === 2}
-            className="md:col-span-2 md:row-span-2 bg-slate-900 dark:bg-slate-950 text-white border border-slate-800 shadow-2xl"
+            className="md:col-span-2 md:row-span-2 bg-slate-900 dark:bg-slate-950 text-white border border-slate-800 shadow-2xl order-last md:order-none"
             spotlightColor="rgba(255, 255, 255, 0.08)"
             delay={0.2}
           >
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-2">
               <Bot size={20} className="text-pink-400 animate-pulse" />
               <h3 className="text-lg font-bold tracking-wide text-slate-100">AI & Web Labs</h3>
             </div>
+            <p className="text-xs text-slate-400 mb-6 italic">Built just for fun using AI tools ✨</p>
 
             <SwipeableProjects projects={AI_PROJECTS} isMobile={isMobile} />
 
@@ -910,7 +912,7 @@ export default function App() {
           </SpotlightCard>
 
           {/* 4. MAJOR PROJECTS */}
-          <SpotlightCard id="projects" isFocused={focusedCardIndex === 3} className={`md:col-span-4 min-h-[240px] sm:min-h-[260px] ${glassCardStyles}`} delay={0.25}>
+          <SpotlightCard id="projects" isFocused={focusedCardIndex === 3} className={`md:col-span-4 min-h-[240px] sm:min-h-[260px] scroll-mt-28 ${glassCardStyles}`} delay={0.25}>
             <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-xl ${ACCENTS.lavender}`}><Terminal size={20} /></div>
@@ -949,7 +951,7 @@ export default function App() {
           </SpotlightCard>
 
           {/* 5. EDUCATION */}
-          <SpotlightCard id="education" isFocused={focusedCardIndex === 4} className={`md:col-span-2 min-h-[180px] ${glassCardStyles}`} delay={0.3}>
+          <SpotlightCard id="education" isFocused={focusedCardIndex === 4} className={`md:col-span-2 min-h-[180px] scroll-mt-28 ${glassCardStyles}`} delay={0.3}>
             <div className={`p-2 rounded-xl ${ACCENTS.peach} w-fit mb-4`}>
               <BookOpen size={20} />
             </div>
