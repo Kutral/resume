@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useMotionValue, useSpring, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import {
   Github, Linkedin, Mail, ExternalLink, Code2, Terminal,
   User, BookOpen, Briefcase, Monitor,
@@ -625,17 +625,40 @@ const ParallaxBackground = React.memo(({ isDark }) => {
 });
 
 
-// SpotlightCard with keyboard navigation support
+// Spotlight Card with 3D Tilt & Glare
 const SpotlightCard = ({ children, className = "", delay = 0, onClick, spotlightColor = "rgba(255,255,255,0.25)", id, isFocused }) => {
   const divRef = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const isMobile = useIsMobile();
+
+  // Tilt Motion Values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useTransform(y, [-0.5, 0.5], [2, -2]);
+  const rotateY = useTransform(x, [-0.5, 0.5], [-2, 2]);
 
   const handleMouseMove = (e) => {
     if (!divRef.current || isMobile) return;
     const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const width = rect.width;
+    const height = rect.height;
+
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    // Normalized coordinates -0.5 to 0.5
+    const xPct = (mouseX / width) - 0.5;
+    const yPct = (mouseY / height) - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    x.set(0);
+    y.set(0);
   };
 
   return (
@@ -647,25 +670,30 @@ const SpotlightCard = ({ children, className = "", delay = 0, onClick, spotlight
       animate={{
         opacity: 1,
         y: 0,
-        boxShadow: isFocused ? '0 0 0 3px rgba(147, 51, 234, 0.5)' : 'none'
+        boxShadow: isFocused ? '0 0 0 3px rgba(147, 51, 234, 0.5)' : 'none',
+      }}
+      style={{
+        rotateX: isMobile ? 0 : rotateX,
+        rotateY: isMobile ? 0 : rotateY,
+        transformStyle: "preserve-3d",
       }}
       transition={{ duration: 0.6, delay, type: "spring" }}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => !isMobile && setOpacity(1)}
-      onMouseLeave={() => setOpacity(0)}
+      onMouseEnter={() => { if (!isMobile) setIsHovered(true); }}
+      onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      className={`relative overflow-hidden rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 group interactive outline-none ${className}`}
+      className={`relative overflow-hidden rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 group interactive outline-none transform perspective-1000 ${className}`}
     >
       {!isMobile && (
-        <div
+        <motion.div
           className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
           style={{
-            background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 40%)`,
-            opacity: opacity,
+            background: useMotionTemplate`radial-gradient(600px circle at ${useTransform(x, [-0.5, 0.5], ['0%', '100%'])} ${useTransform(y, [-0.5, 0.5], ['0%', '100%'])}, ${spotlightColor}, transparent 40%)`,
+            opacity: isHovered ? 1 : 0,
           }}
         />
       )}
-      <div className="relative z-10 h-full p-5 sm:p-7 flex flex-col">{children}</div>
+      <div className="relative z-10 h-full p-5 sm:p-7 flex flex-col transform-gpu preserve-3d">{children}</div>
     </motion.div>
   );
 };
