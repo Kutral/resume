@@ -970,7 +970,7 @@ export default function App() {
               <Cpu size={18} className={isDark ? 'text-slate-500' : 'text-slate-400'} />
               <h3 className={`text-sm font-bold uppercase tracking-widest ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Tech Stack</h3>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="flex flex-wrap gap-3">
               {TECH_STACK.map((tech) => (
                 <motion.div
                   key={tech.name}
