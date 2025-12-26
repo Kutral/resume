@@ -5,7 +5,7 @@ import {
   User, BookOpen, Briefcase, Monitor,
   ArrowUpRight, Bot, Layers, Cpu, Share2, Home, FolderKanban, GraduationCap,
   ChevronLeft, ChevronRight, Sun, Moon,
-  Coffee, Database, GitBranch, Globe, Server, Box
+  Coffee, Database, GitBranch, Globe, Server, Box, Wrench, FileCode, Layout, Book, CreditCard
 } from 'lucide-react';
 
 /**
@@ -486,15 +486,15 @@ const SwipeableProjects = ({ projects, isMobile }) => {
             href={proj.link}
             target="_blank"
             rel="noreferrer"
-            className="block group/item bg-white/5 hover:bg-white/10 p-3 rounded-xl border border-white/10 transition-all hover:translate-x-1"
+            className="block group/item bg-slate-50 hover:bg-slate-100 dark:bg-white/5 dark:hover:bg-white/10 p-3 rounded-xl border border-slate-200 dark:border-white/10 transition-all hover:translate-x-1"
           >
             <div className="flex justify-between items-start mb-1">
-              <div className="flex items-center gap-2 font-bold text-slate-200 group-hover/item:text-pink-300 transition-colors text-sm">
+              <div className="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200 group-hover/item:text-pink-500 dark:group-hover/item:text-pink-300 transition-colors text-sm">
                 {proj.title}
               </div>
-              <ExternalLink size={12} className="opacity-50 group-hover/item:opacity-100 text-white" />
+              <ExternalLink size={12} className="opacity-50 group-hover/item:opacity-100 text-slate-400 dark:text-white" />
             </div>
-            <p className="text-xs text-slate-400 mb-2 line-clamp-2">{proj.desc}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 line-clamp-2">{proj.desc}</p>
           </a>
         ))}
       </div>
@@ -520,17 +520,17 @@ const SwipeableProjects = ({ projects, isMobile }) => {
                 href={proj.link}
                 target="_blank"
                 rel="noreferrer"
-                className="block bg-white/5 p-4 rounded-xl border border-white/10 min-h-[120px]"
+                className="block bg-slate-50 dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-white/10 min-h-[120px]"
                 onClick={() => triggerHaptic('light')}
               >
                 <div className="flex justify-between items-start mb-2">
-                  <div className="font-bold text-slate-200 text-base">{proj.title}</div>
-                  <ExternalLink size={14} className="text-white/50" />
+                  <div className="font-bold text-slate-800 dark:text-slate-200 text-base">{proj.title}</div>
+                  <ExternalLink size={14} className="text-slate-400 dark:text-white/50" />
                 </div>
-                <p className="text-sm text-slate-400">{proj.desc}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">{proj.desc}</p>
                 <div className="flex gap-2 mt-3">
                   {proj.tags.map(tag => (
-                    <span key={tag} className="text-[10px] bg-white/10 text-white/70 px-2 py-1 rounded">{tag}</span>
+                    <span key={tag} className="text-[10px] bg-white dark:bg-white/10 text-slate-600 dark:text-white/70 px-2 py-1 rounded border border-slate-200 dark:border-none">{tag}</span>
                   ))}
                 </div>
               </a>
@@ -544,13 +544,13 @@ const SwipeableProjects = ({ projects, isMobile }) => {
           <button
             key={i}
             onClick={() => { setCurrentIndex(i); triggerHaptic('light'); }}
-            className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? 'bg-pink-400 w-4' : 'bg-white/30'
+            className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? 'bg-pink-500 dark:bg-pink-400 w-4' : 'bg-slate-300 dark:bg-white/30'
               }`}
           />
         ))}
       </div>
 
-      <div className="flex justify-center items-center gap-1 mt-2 text-white/30 text-xs">
+      <div className="flex justify-center items-center gap-1 mt-2 text-slate-400 dark:text-white/30 text-xs">
         <ChevronLeft size={12} />
         <span>Swipe</span>
         <ChevronRight size={12} />
@@ -751,18 +751,35 @@ export default function App() {
     window.location.reload();
   };
 
-  const TECH_STACK = [
-    { name: 'Java', icon: <Coffee size={16} />, color: 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300' },
-    { name: 'Spring', icon: <Layers size={16} />, color: 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300' },
-    { name: 'React', icon: <Box size={16} />, color: 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300' },
-    { name: 'TypeScript', icon: <Code2 size={16} />, color: 'bg-blue-50 text-blue-600 dark:bg-blue-600/20 dark:text-blue-200' },
-    { name: 'MySQL', icon: <Database size={16} />, color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300' },
-    { name: 'Tailwind', icon: <Globe size={16} />, color: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300' },
-    { name: 'Git', icon: <GitBranch size={16} />, color: 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300' },
-    { name: 'J2EE', icon: <Server size={16} />, color: 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300' }
+  const TECH_CATEGORIES = [
+    {
+      title: 'Front-End Development',
+      skills: [
+        { name: 'HTML', icon: <Layout size={14} />, color: 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300' },
+        { name: 'CSS', icon: <Box size={14} />, color: 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300' },
+        { name: 'JavaScript', icon: <Code2 size={14} />, color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-300' },
+        { name: 'JSP', icon: <FileCode size={14} />, color: 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300' }
+      ]
+    },
+    {
+      title: 'Back-End Development',
+      skills: [
+        { name: 'Java', icon: <Coffee size={14} />, color: 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300' },
+        { name: 'Servlets', icon: <Server size={14} />, color: 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300' },
+        { name: 'REST APIs', icon: <Globe size={14} />, color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300' }
+      ]
+    },
+    {
+      title: 'Database & Tools',
+      skills: [
+        { name: 'MySQL', icon: <Database size={14} />, color: 'bg-blue-50 text-blue-600 dark:bg-blue-600/20 dark:text-blue-200' },
+        { name: 'JDBC', icon: <Database size={14} />, color: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300' },
+        { name: 'Maven', icon: <Wrench size={14} />, color: 'bg-pink-100 text-pink-700 dark:bg-pink-500/20 dark:text-pink-300' }
+      ]
+    }
   ];
 
-  const glassCardStyles = "bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl border border-white/60 dark:border-slate-700/60";
+  const glassCardStyles = "bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-md";
 
   return (
     <div className={`min-h-screen font-sans selection:bg-purple-300 selection:text-purple-900 overflow-x-hidden transition-colors duration-300 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
@@ -798,9 +815,9 @@ export default function App() {
               Incubation Intern @ Zoho School for Graduate Studies
             </div>
             <h1 className={`text-4xl sm:text-7xl font-black tracking-tighter leading-[0.9] mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Kutraleeswaran <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 bg-[length:200%_auto] animate-gradient">B</span>
+              Kutraleeswaran <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-700 via-pink-500 to-violet-700 bg-[length:200%_auto] animate-gradient">B</span>
             </h1>
-            <p className={`text-base sm:text-xl font-light max-w-lg ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <p className={`text-base sm:text-xl font-light max-w-lg ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               Computer Science Engineer & Full-Stack Developer. <br />
               Specializing in scalable backend systems & modern UI.
             </p>
@@ -853,13 +870,14 @@ export default function App() {
             <h2 className={`text-2xl sm:text-3xl font-bold mb-4 ${isDark ? 'text-white' : 'text-slate-800'}`}>
               Merging <span className="text-purple-600 dark:text-purple-400">System Design</span> with <span className="text-pink-600 dark:text-pink-400">Creative Logic</span>.
             </h2>
-            <p className={`text-base sm:text-lg leading-relaxed mb-6 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+
+            <p className={`text-base sm:text-lg leading-relaxed mb-6 max-w-2xl ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               Computer Science & Engineering graduate currently at <strong className={isDark ? 'text-white' : 'text-slate-900'}>Zoho School for Graduate Studies</strong>.
               I am passionate about Java programming, OOP principles, and building secure, scalable web applications.
             </p>
             <div className="mt-auto flex flex-wrap gap-2">
-              <div className={`px-4 py-2 rounded-lg text-sm font-semibold border ${isDark ? 'bg-slate-700/80 text-slate-200 border-slate-600' : 'bg-slate-100/80 text-slate-600 border-slate-200'}`}>🚀 Java Development</div>
-              <div className={`px-4 py-2 rounded-lg text-sm font-semibold border ${isDark ? 'bg-slate-700/80 text-slate-200 border-slate-600' : 'bg-slate-100/80 text-slate-600 border-slate-200'}`}>✨ Problem Solving</div>
+              <div className={`px-4 py-2 rounded-lg text-sm font-semibold border ${isDark ? 'bg-slate-700/80 text-slate-200 border-slate-600/50' : 'bg-slate-50/80 text-slate-700 border-slate-200 shadow-sm'}`}>🚀 Java Development</div>
+              <div className={`px-4 py-2 rounded-lg text-sm font-semibold border ${isDark ? 'bg-slate-700/80 text-slate-200 border-slate-600/50' : 'bg-slate-50/80 text-slate-700 border-slate-200 shadow-sm'}`}>✨ Problem Solving</div>
             </div>
           </SpotlightCard>
 
@@ -877,8 +895,8 @@ export default function App() {
                 <div className="relative pl-6">
                   <span className={`absolute -left-[9px] top-1.5 h-4 w-4 rounded-full border-4 ${isDark ? 'border-slate-900 bg-blue-500' : 'border-white bg-blue-600'}`} />
                   <h4 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Zoho School for Graduate Studies</h4>
-                  <p className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-2">Incubation Intern • Sep 2025 - Present</p>
-                  <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <p className="text-xs font-bold text-blue-600 dark:text-blue-500 uppercase tracking-wider mb-2">Incubation Intern • Sep 2025 - Present</p>
+                  <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-700'}`}>
                     Intensive training in core Java, OOPs patterns, and debugging techniques. Working on real-world system design projects to build scalable solutions.
                   </p>
                 </div>
@@ -894,20 +912,20 @@ export default function App() {
           <SpotlightCard
             id="ai-labs"
             isFocused={focusedCardIndex === 2}
-            className="md:col-span-2 md:row-span-2 bg-slate-900 dark:bg-slate-950 text-white border border-slate-800 shadow-2xl order-last md:order-none"
-            spotlightColor="rgba(255, 255, 255, 0.08)"
+            className="md:col-span-2 md:row-span-2 bg-white dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 shadow-xl order-last md:order-none"
+            spotlightColor={isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.04)"}
             delay={0.2}
           >
             <div className="flex items-center gap-2 mb-2">
-              <Bot size={20} className="text-pink-400 animate-pulse" />
-              <h3 className="text-lg font-bold tracking-wide text-slate-100">AI & Web Labs</h3>
+              <Bot size={20} className="text-pink-500 dark:text-pink-400 animate-pulse" />
+              <h3 className="text-lg font-bold tracking-wide text-slate-800 dark:text-slate-100">AI & Web Labs</h3>
             </div>
-            <p className="text-xs text-slate-400 mb-6 italic">Built just for fun using AI tools ✨</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 italic">Built just for fun using AI tools ✨</p>
 
             <SwipeableProjects projects={AI_PROJECTS} isMobile={isMobile} />
 
-            <div className="mt-6 pt-4 border-t border-white/10">
-              <span className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Featured Experiments</span>
+            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-white/10">
+              <span className="text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-bold">Featured Experiments</span>
             </div>
           </SpotlightCard>
 
@@ -926,25 +944,34 @@ export default function App() {
                 className={`group block p-4 rounded-2xl border transition-all ${isDark ? 'bg-slate-700/40 border-slate-600/60 hover:border-purple-500 hover:bg-slate-700' : 'bg-white/40 border-slate-200/60 hover:border-purple-300 hover:bg-white'}`}
                 onClick={() => isMobile && triggerHaptic('light')}>
                 <div className="flex justify-between items-center mb-2">
-                  <h4 className={`font-bold group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>Knowledge Nexus</h4>
+                  <div className="flex items-center gap-2">
+                    <div className={`p-1.5 rounded-lg ${isDark ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-50 text-purple-600'}`}>
+                      <Book size={16} />
+                    </div>
+                    <h4 className={`font-bold group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>Knowledge Nexus</h4>
+                  </div>
                   <ArrowUpRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-purple-500" />
                 </div>
-                <p className={`text-sm mb-3 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Library Management System. Secure login, REST API architecture, and strict JSON communication.</p>
+                <p className={`text-sm mb-4 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Library Management System. Secure login, REST API architecture, and strict JSON communication.</p>
                 <div className="flex gap-2">
-                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isDark ? 'bg-purple-900/50 text-purple-300' : 'bg-purple-50 text-purple-700'}`}>Java Servlets</span>
-                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isDark ? 'bg-purple-900/50 text-purple-300' : 'bg-purple-50 text-purple-700'}`}>JSP</span>
+                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isDark ? 'bg-purple-500/20 text-purple-200 border border-purple-500/30' : 'bg-purple-50 text-purple-700 border border-purple-200'}`}>Java Servlets</span>
+                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isDark ? 'bg-purple-500/20 text-purple-200 border border-purple-500/30' : 'bg-purple-50 text-purple-700 border border-purple-200'}`}>JSP</span>
                 </div>
               </a>
 
               <div className={`p-4 rounded-2xl border cursor-default ${isDark ? 'bg-slate-700/40 border-slate-600/60' : 'bg-white/40 border-slate-200/60'}`}>
                 <div className="flex justify-between items-center mb-2">
-                  <h4 className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>ATM & Bus Booking</h4>
-                  <Code2 size={16} className={isDark ? 'text-slate-500' : 'text-slate-400'} />
+                  <div className="flex items-center gap-2">
+                    <div className={`p-1.5 rounded-lg ${isDark ? 'bg-slate-600 text-slate-300' : 'bg-slate-100 text-slate-500'}`}>
+                      <CreditCard size={16} />
+                    </div>
+                    <h4 className={`font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>ATM & Bus Booking</h4>
+                  </div>
                 </div>
-                <p className={`text-sm mb-3 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Pure Java console applications implementing MVC & MVP patterns to demonstrate core OOP logic.</p>
+                <p className={`text-sm mb-4 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Pure Java console applications implementing MVC & MVP patterns to demonstrate core OOP logic.</p>
                 <div className="flex gap-2">
-                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isDark ? 'bg-slate-600 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>OOP</span>
-                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isDark ? 'bg-slate-600 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>Java</span>
+                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isDark ? 'bg-slate-700 text-slate-200 border border-slate-600' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>OOP</span>
+                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isDark ? 'bg-slate-700 text-slate-200 border border-slate-600' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>Java</span>
                 </div>
               </div>
             </div>
@@ -972,16 +999,25 @@ export default function App() {
               <Cpu size={18} className={isDark ? 'text-slate-500' : 'text-slate-400'} />
               <h3 className={`text-sm font-bold uppercase tracking-widest ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Tech Stack</h3>
             </div>
-            <div className="flex flex-wrap gap-3">
-              {TECH_STACK.map((tech) => (
-                <motion.div
-                  key={tech.name}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  className={`flex items-center gap-3 px-3 py-3 rounded-xl border border-transparent transition-all ${tech.color} bg-opacity-20 dark:bg-opacity-10`}
-                >
-                  <div className="p-1.5 bg-white/50 dark:bg-black/20 rounded-lg">{tech.icon}</div>
-                  <span className="font-bold text-xs">{tech.name}</span>
-                </motion.div>
+            <div className="flex flex-col gap-5">
+              {TECH_CATEGORIES.map((category, idx) => (
+                <div key={idx}>
+                  <h4 className={`text-[10px] font-bold uppercase tracking-widest mb-3 border-b pb-1 ${isDark ? 'text-slate-500 border-slate-700' : 'text-slate-400 border-slate-200'}`}>
+                    {category.title}
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {category.skills.map((tech) => (
+                      <motion.div
+                        key={tech.name}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg border border-transparent transition-all cursor-default ${tech.color} bg-opacity-20 dark:bg-opacity-10`}
+                      >
+                        <div className="opacity-80">{tech.icon}</div>
+                        <span className="font-bold text-[11px]">{tech.name}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </SpotlightCard>
@@ -996,7 +1032,7 @@ export default function App() {
           </div>
         </footer>
 
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }
