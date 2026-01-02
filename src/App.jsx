@@ -611,6 +611,11 @@ const SpotlightCard = ({ children, className = "", delay = 0, onClick, spotlight
   const rotateX = useTransform(y, [-0.5, 0.5], [2, -2]);
   const rotateY = useTransform(x, [-0.5, 0.5], [-2, 2]);
 
+  // Fix: Move useMotionTemplate to top level to avoid conditional hook call error
+  const mouseXStr = useTransform(x, [-0.5, 0.5], ['0%', '100%']);
+  const mouseYStr = useTransform(y, [-0.5, 0.5], ['0%', '100%']);
+  const spotlightBg = useMotionTemplate`radial-gradient(600px circle at ${mouseXStr} ${mouseYStr}, ${spotlightColor}, transparent 40%)`;
+
   const handleMouseMove = (e) => {
     if (!divRef.current || isMobile) return;
     const rect = divRef.current.getBoundingClientRect();
@@ -661,7 +666,7 @@ const SpotlightCard = ({ children, className = "", delay = 0, onClick, spotlight
         <motion.div
           className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
           style={{
-            background: useMotionTemplate`radial-gradient(600px circle at ${useTransform(x, [-0.5, 0.5], ['0%', '100%'])} ${useTransform(y, [-0.5, 0.5], ['0%', '100%'])}, ${spotlightColor}, transparent 40%)`,
+            background: spotlightBg,
             opacity: isHovered ? 1 : 0,
           }}
         />
