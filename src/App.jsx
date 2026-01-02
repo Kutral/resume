@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import CustomCursor from './components/CustomCursor';
+import Lenis from 'lenis';
 import { motion, useMotionValue, useSpring, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import {
   Github, Linkedin, Mail, ExternalLink, Code2, Terminal,
@@ -140,11 +142,46 @@ const ScrollProgress = () => {
 const ThemeToggle = ({ isDark, setIsDark, isMobile }) => {
   return (
     <motion.button
+      data-cursor-text="THEME"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      onClick={() => {
-        setIsDark(!isDark);
+      onClick={(e) => {
         isMobile && triggerHaptic('light');
+
+        // Fallback for browsers that don't support View Transitions
+        if (!document.startViewTransition) {
+          setIsDark(!isDark);
+          return;
+        }
+
+        const x = e.clientX;
+        const y = e.clientY;
+        const endRadius = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        );
+
+        const transition = document.startViewTransition(() => {
+          setIsDark(!isDark);
+        });
+
+        transition.ready.then(() => {
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ];
+
+          document.documentElement.animate(
+            {
+              clipPath: clipPath,
+            },
+            {
+              duration: 500,
+              easing: 'ease-in-out',
+              pseudoElement: '::view-transition-new(root)',
+            }
+          );
+        });
       }}
       className="p-3 min-w-[44px] min-h-[44px] rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-lg border border-white/50 dark:border-slate-700 transition-colors"
       aria-label="Toggle theme"
@@ -176,73 +213,7 @@ const ThemeToggle = ({ isDark, setIsDark, isMobile }) => {
   );
 };
 
-// High-Performance Custom Cursor (Framer Motion)
-const CustomCursor = () => {
-  const [isHovering, setIsHovering] = useState(false);
-
-  // Mouse position as MotionValues
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Smooth springs for the cursor elements
-  const smoothOptions = { damping: 20, stiffness: 300, mass: 0.5 };
-  const smoothX = useSpring(mouseX, smoothOptions);
-  const smoothY = useSpring(mouseY, smoothOptions);
-
-  // Slightly delay/lag for the outer ring/glow
-  const ringOptions = { damping: 20, stiffness: 150, mass: 0.8 };
-  const ringX = useSpring(mouseX, ringOptions);
-  const ringY = useSpring(mouseY, ringOptions);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-
-    const handleMouseOver = (e) => {
-      setIsHovering(!!e.target.closest('button, a, .interactive, input, textarea'));
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseover', handleMouseOver);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseover', handleMouseOver);
-    };
-  }, [mouseX, mouseY]);
-
-  return (
-    <>
-      <motion.div
-        className="fixed top-0 left-0 w-4 h-4 rounded-full bg-white mix-blend-difference pointer-events-none z-[9999]"
-        style={{
-          x: smoothX,
-          y: smoothY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-        animate={{
-          scale: isHovering ? 0.5 : 1,
-        }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-12 h-12 rounded-full border border-white/30 backdrop-blur-[1px] pointer-events-none z-[9998]"
-        style={{
-          x: ringX,
-          y: ringY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-        animate={{
-          scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
-          borderColor: isHovering ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.3)'
-        }}
-      />
-    </>
-  );
-};
+// CustomCursor is now imported from components/CustomCursor.jsx
 
 
 // Pull to Refresh
@@ -334,11 +305,13 @@ const StickyHeader = ({ isVisible, isMobile, isDark, setIsDark }) => {
             <div className="flex gap-2">
               <ThemeToggle isDark={isDark} setIsDark={setIsDark} isMobile={isMobile} />
               <a href="https://github.com/kutral" target="_blank" rel="noreferrer"
+                data-cursor-text="CODE"
                 className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                 onClick={() => isMobile && triggerHaptic('light')}>
                 <Github size={18} className="dark:text-white" />
               </a>
               <a href="https://linkedin.com/in/kutraleeswaranb/" target="_blank" rel="noreferrer"
+                data-cursor-text="LINK"
                 className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center bg-blue-100 dark:bg-blue-900/50 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors text-blue-600 dark:text-blue-400"
                 onClick={() => isMobile && triggerHaptic('light')}>
                 <Linkedin size={18} />
@@ -698,7 +671,7 @@ const SpotlightCard = ({ children, className = "", delay = 0, onClick, spotlight
   );
 };
 
-const MagneticButton = ({ children, href, className = "", isMobile }) => {
+const MagneticButton = ({ children, href, className = "", isMobile, cursorText }) => {
   const ref = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -715,6 +688,7 @@ const MagneticButton = ({ children, href, className = "", isMobile }) => {
       href={href}
       target="_blank"
       rel="noreferrer"
+      data-cursor-text={cursorText}
       animate={isMobile ? {} : position}
       transition={{ type: "spring", stiffness: 150, damping: 15 }}
       onMouseMove={handleMouse}
@@ -745,6 +719,31 @@ export default function App() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Smooth Scrolling (Lenis)
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
   }, []);
 
   // Keyboard navigation
@@ -858,13 +857,13 @@ export default function App() {
             className="flex gap-3 flex-wrap"
           >
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} isMobile={isMobile} />
-            <MagneticButton isMobile={isMobile} href="https://github.com/kutral" className="p-4 bg-white/80 dark:bg-slate-800/80 rounded-full shadow-lg hover:shadow-xl text-slate-900 dark:text-white border border-white/50 dark:border-slate-700">
+            <MagneticButton isMobile={isMobile} href="https://github.com/kutral" cursorText="CODE" className="p-4 bg-white/80 dark:bg-slate-800/80 rounded-full shadow-lg hover:shadow-xl text-slate-900 dark:text-white border border-white/50 dark:border-slate-700">
               <Github size={24} />
             </MagneticButton>
-            <MagneticButton isMobile={isMobile} href="https://linkedin.com/in/kutraleeswaranb/" className="p-4 bg-blue-600/90 rounded-full shadow-lg hover:shadow-xl text-white">
+            <MagneticButton isMobile={isMobile} href="https://linkedin.com/in/kutraleeswaranb/" cursorText="CONNECT" className="p-4 bg-blue-600/90 rounded-full shadow-lg hover:shadow-xl text-white">
               <Linkedin size={24} />
             </MagneticButton>
-            <MagneticButton isMobile={isMobile} href="mailto:kutraleeswaran2003@gmail.com" className="p-4 bg-slate-900 dark:bg-slate-700 rounded-full shadow-lg hover:shadow-xl text-white">
+            <MagneticButton isMobile={isMobile} href="mailto:kutraleeswaran2003@gmail.com" cursorText="MAIL" className="p-4 bg-slate-900 dark:bg-slate-700 rounded-full shadow-lg hover:shadow-xl text-white">
               <Mail size={24} />
             </MagneticButton>
           </motion.div>
@@ -969,6 +968,7 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <a href="https://github.com/Kutral/LibraryProjectFrontend" target="_blank" rel="noreferrer"
+                data-cursor-text="OPEN"
                 className={`group block p-4 rounded-2xl border transition-all ${isDark ? 'bg-slate-700/40 border-slate-600/60 hover:border-purple-500 hover:bg-slate-700' : 'bg-white/40 border-slate-200/60 hover:border-purple-300 hover:bg-white'}`}
                 onClick={() => isMobile && triggerHaptic('light')}>
                 <div className="flex justify-between items-center mb-2">
