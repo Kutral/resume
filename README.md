@@ -2,7 +2,6 @@
 
 > A visually stunning, high-performance personal portfolio website built with modern web technologies.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?logo=tailwind-css&logoColor=white)
@@ -110,12 +109,9 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 ---
 
-## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+<div align="center">
 
----
+### Made with ❤️ by Kutraleeswaran
 
-<p align="center">
-  Built with ❤️ and ☕ using React & Tailwind
-</p>
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge&logo=github)](https://github.com/kutraleeswaran)
