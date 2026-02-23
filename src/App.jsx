@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import CustomCursor from './components/CustomCursor';
-import RobotModel from './components/RobotModel';
 import Lenis from 'lenis';
 import { motion, useMotionValue, useSpring, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import {
@@ -874,16 +873,6 @@ export default function App() {
             </MagneticButton>
           </motion.div>
         </header>
-
-        {/* 3D HERO SECTION */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="mb-16 -mt-8"
-        >
-          <RobotModel sceneUrl="https://prod.spline.design/Q4NvC1lKwzfYMgBR/scene.splinecode" />
-        </motion.div>
 
         {/* Keyboard Navigation Hint (Desktop) */}
         {!isMobile && (
